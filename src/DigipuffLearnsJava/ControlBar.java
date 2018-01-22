@@ -110,7 +110,7 @@ public class ControlBar extends ScrollPane {
         numMovesLbl.getStyleClass().add("styled-text");
         locLbl.setText("Location: " + Hub.getWorld().getGoal().locationStr());
         dirLbl.setText("Direction: " + Hub.getWorld().getGoal().directionStr());
-        flLbl.setText("Flashlights: " + Hub.getWorld().getGoal().numFlashlightsStr());
+        flLbl.setText("Haikus: " + Hub.getWorld().getGoal().numHaikusStr());
         numMovesLbl.setText("No. of Moves: " + Hub.getWorld().getGoal().numMovesStr());
         goalVBox.getChildren().addAll(goalLabelHBox, locLbl, dirLbl, flLbl, numMovesLbl);
         mainVBox = new VBox(25);

@@ -27,9 +27,9 @@ public class World {
     private static final String NHS_TAG = "nhs=";
     private static final String NVS_TAG = "nvs=";
     private static final String WALLS_TAG = "walls=";
-    private static final String FL_TAG = "flashlights=";
+    private static final String HAIKUS_TAG = "haikus=";
     private static final String GOAL_TAG = "goal=";
-    private static final String FLASHLIGHT_ID = "fl";
+    private static final String HAIKU_ID = "haiku";
     private static final String GOAL_ID = "g";
     private static final String SOUTH_WALL_ID = "southWall";
     private static final String NORTH_WALL_ID = "northWall";
@@ -40,7 +40,7 @@ public class World {
     private static final String BOTTOM_LEFT_ID = "bottomLeft";
     private static final String BOTTOM_RIGHT_ID = "bottomRight";
     private static final String NUM_BOX_ID = "numBox";
-    private static final String DEFAULT_FLASHLIGHT_URL = "images/haiku.png";
+    private static final String DEFAULT_HAIKU_URL = "images/haiku.png";
     private static final String ZERO_URL = "images/0.png";
     private static final String LEADING_ONE_URL = "images/l1.png";
     private static final String TRAILING_ONE_URL = "images/t1.png";
@@ -62,13 +62,13 @@ public class World {
     private GridPane grid;
     private Pane pane;
     private List<Wall> walls;
-    private int[][] flashlights;
+    private int[][] haikus;
     private Goal goal;
     private double gridLineWidth;
-    private String flashlightUrl;
+    private String haikuUrl;
     private WorldObjectList[][] map;
     private List<R2> r2List;
-    private ArrayList<R2Action> actions;
+    private ArrayList<DigiAction> actions;
     private boolean actionSequenceStarted = false;
     private InitState initState;
 
@@ -77,7 +77,7 @@ public class World {
         this.spaceSize = spaceSize;
         this.numHorizSpaces = numHorizSpaces;
         this.numVertSpaces = numVertSpaces;
-        initFlashlights();
+        initHaikus();
         buildGrid();
         map = new WorldObjectList[numHorizSpaces][numVertSpaces];
         this.pane = new Pane(this.grid);
@@ -91,12 +91,12 @@ public class World {
         this.numVertSpaces = parseNVS(worldStr);
         parseGoal(worldStr);
         List<Wall> wallList = parseWalls(worldStr);
-        List<FlashlightPoint> flList = parseFlashlights(worldStr);
-        initFlashlights();
+        List<HaikuPoint> flList = parseHaikus(worldStr);
+        initHaikus();
         buildGrid();
         setWalls(wallList);
         drawWalls();
-        setFlashlights(flList);
+        setHaikus(flList);
         drawGoal();
         map = new WorldObjectList[getNumHorizSpaces()][getNumVertSpaces()];
         this.pane = new Pane(this.grid);
@@ -116,7 +116,7 @@ public class World {
                 NHS_TAG + String.valueOf(numHorizSpaces) +
                 NVS_TAG + String.valueOf(numVertSpaces) +
                 WALLS_TAG + wallsToString() +
-                FL_TAG + flashlightsToString() +
+                HAIKUS_TAG + haikusToString() +
                 GOAL_TAG + goalToString();
     }
 
@@ -156,10 +156,10 @@ public class World {
         return goal;
     }
 
-    public String getFlashlightUrl() {
-        if(flashlightUrl == null)
-            flashlightUrl = DEFAULT_FLASHLIGHT_URL;
-        return flashlightUrl;
+    public String getHaikuUrl() {
+        if(haikuUrl == null)
+            haikuUrl = DEFAULT_HAIKU_URL;
+        return haikuUrl;
     }
 
     public ArrayList<WorldObject> getWObjList(int x, int y) {
@@ -172,13 +172,13 @@ public class World {
         return r2List;
     }
 
-    private List<R2Action> getActions() {
+    private List<DigiAction> getActions() {
         if(actions == null) actions = new ArrayList<>();
         return actions;
     }
 
-    public List<R2Action> getActionsAndClear() {
-        List<R2Action> actionList = getActions();
+    public List<DigiAction> getActionsAndClear() {
+        List<DigiAction> actionList = getActions();
         this.actions = new ArrayList<>();
         return actionList;
     }
@@ -236,12 +236,12 @@ public class World {
         return false;
     }
 
-    public int[][] getFlashlights() {
-        return flashlights;
+    public int[][] getHaikus() {
+        return haikus;
     }
 
-    public boolean isFlashlightAt(int x, int y) {
-        return flashlights[x][y] > 0;
+    public boolean isHaikuAt(int x, int y) {
+        return haikus[x][y] > 0;
     }
 
     public boolean isGoal(int x, int y) {
@@ -288,19 +288,19 @@ public class World {
         }
     }
 
-    public void setFlashlights(List<FlashlightPoint> flashlightPointList) {
-        if(flashlightPointList == null) return;
-        for(FlashlightPoint flPoint: flashlightPointList) {
+    public void setHaikus(List<HaikuPoint> haikuPointList) {
+        if(haikuPointList == null) return;
+        for(HaikuPoint flPoint: haikuPointList) {
             int multiplicity = flPoint.getMultiplicity();
             for(int i = 0; i < multiplicity; i++) {
-                flashlights[flPoint.getIntPoint().getX()][flPoint.getIntPoint().getY()]++;
-                drawFlashlight(flPoint.getIntPoint().getX(), flPoint.getIntPoint().getY());
+                haikus[flPoint.getIntPoint().getX()][flPoint.getIntPoint().getY()]++;
+                drawHaiku(flPoint.getIntPoint().getX(), flPoint.getIntPoint().getY());
             }
         }
     }
 
-    public void setFlashlightUrl(String url) {
-        flashlightUrl = url;
+    public void setHaikuUrl(String url) {
+        haikuUrl = url;
     }
 
     public void setGridLineWidth(double width) {
@@ -329,38 +329,38 @@ public class World {
         }
     }
 
-    public void addFlashlight(int x, int y) {
-        flashlights[x][y]++;
-        if(!Hub.isRecording()) drawFlashlight(x, y);
+    public void addHaiku(int x, int y) {
+        haikus[x][y]++;
+        if(!Hub.isRecording()) drawHaiku(x, y);
     }
 
-    public void removeFlashlight(int x, int y) {
-        flashlights[x][y]--;
+    public void removeHaiku(int x, int y) {
+        haikus[x][y]--;
         if(!Hub.isRecording()) {
-        removeFlashlightImage(x, y);
+        removeHaikuImage(x, y);
         }
     }
 
-    private void removeFlashlightImage(int x, int y) {
+    private void removeHaikuImage(int x, int y) {
         List<Node> nodeList = getNodeListAt(x, y);
         for (int i = 0; i < nodeList.size(); i++) {
             Node node = nodeList.get(i);
-            //change number if more than 1 flashlight
-            if (flashlights[x][y] > 0) {
+            //change number if more than 1 haiku
+            if (haikus[x][y] > 0) {
                 //change or remove the number
                 if (node.getId() != null && node.getId().equals(NUM_BOX_ID)) {
                     nodeList.remove(node);
-                    if (flashlights[x][y] > 1) drawNumber(x, y);
+                    if (haikus[x][y] > 1) drawNumber(x, y);
                 }
-            } else { //remove the flashlight image
-                if (node.getId() != null && node.getId().equals(FLASHLIGHT_ID)) {
+            } else { //remove the haiku image
+                if (node.getId() != null && node.getId().equals(HAIKU_ID)) {
                     nodeList.remove(node);
                 }
             }
         }
     }
 
-    public void addAction(R2Action action) {
+    public void addAction(DigiAction action) {
         if(!actionSequenceStarted) {
             saveInitialState();
             actionSequenceStarted = true;
@@ -375,14 +375,14 @@ public class World {
 
     //OTHER METHODS
     public void prepareForReplay() {
-        flashlights = initState.flashlights;
-        redrawFlashlights();
+        haikus = initState.haikus;
+        redrawHaikus();
         map = initState.map;
     }
 
     private void saveInitialState() {
         initState = new InitState();
-        initState.flashlights = clone(flashlights);
+        initState.haikus = clone(haikus);
         initState.map = clone(map);
     }
 
@@ -424,7 +424,7 @@ public class World {
         Rectangle rect = new Rectangle(getSpaceSize(), getSpaceSize());
         rect.setStroke(Color.GHOSTWHITE);
         rect.setStrokeWidth(borderWidth);
-        rect.setFill(new ImagePattern(new Image("images/bg/white3.jpg")));
+        rect.setFill(new ImagePattern(new Image("images/white-marble.jpg")));
         StackPane gridCell = new StackPane();
         gridCell.setAlignment(Pos.CENTER);
         gridCell.getChildren().add(rect);
@@ -444,11 +444,11 @@ public class World {
         return getNumVertSpaces() - 1 - row;
     }
 
-    private void initFlashlights() {
-        flashlights = new int[numHorizSpaces][numVertSpaces];
+    private void initHaikus() {
+        haikus = new int[numHorizSpaces][numVertSpaces];
         for(int i = 0; i < numHorizSpaces; i++) {
             for(int j = 0; j < numVertSpaces; j++) {
-                flashlights[i][j] = 0;
+                haikus[i][j] = 0;
             }
         }
     }
@@ -458,11 +458,11 @@ public class World {
                 !worldStr.contains(NHS_TAG) ||
                 !worldStr.contains(NVS_TAG) ||
                 !worldStr.contains(WALLS_TAG) ||
-                !worldStr.contains(FL_TAG) ||
+                !worldStr.contains(HAIKUS_TAG) ||
                 !worldStr.contains(GOAL_TAG) ||
                 !worldStr.contains(Goal.LOC_TAG) ||
                 !worldStr.contains(Goal.DIR_TAG) ||
-                !worldStr.contains(Goal.NUM_FL_TAG) ||
+                !worldStr.contains(Goal.NUM_HAIKUS_TAG) ||
                 !worldStr.contains(Goal.NUM_MOVES_TAG))
             throw new RuntimeException("Error in world string. One or more tags not found.");
     }
@@ -546,10 +546,10 @@ public class World {
         return wallList;
     }
 
-    private List<FlashlightPoint> parseFlashlights(String worldStr) throws Exception {
-        int i = worldStr.indexOf(FL_TAG) + FL_TAG.length();
-        if(Character.isLetter(worldStr.charAt(i))) return null; //there are no flashlights
-        return parseFlashlightPoints(worldStr, i);
+    private List<HaikuPoint> parseHaikus(String worldStr) throws Exception {
+        int i = worldStr.indexOf(HAIKUS_TAG) + HAIKUS_TAG.length();
+        if(Character.isLetter(worldStr.charAt(i))) return null; //there are no haikus
+        return parseHaikuPoints(worldStr, i);
     }
 
     private void parseGoal(String worldStr) throws Exception {
@@ -561,14 +561,14 @@ public class World {
         parseGoalLocation(locStr);
         //Direction
         i = worldStr.indexOf(Goal.DIR_TAG) + Goal.DIR_TAG.length();
-        end = worldStr.indexOf(Goal.NUM_FL_TAG);
+        end = worldStr.indexOf(Goal.NUM_HAIKUS_TAG);
         String dirStr = worldStr.substring(i, end);
         parseGoalDir(dirStr);
-        //Number of Flashlights
-        i = worldStr.indexOf(Goal.NUM_FL_TAG) + Goal.NUM_FL_TAG.length();
+        //Number of haikus
+        i = worldStr.indexOf(Goal.NUM_HAIKUS_TAG) + Goal.NUM_HAIKUS_TAG.length();
         end = worldStr.indexOf(Goal.NUM_MOVES_TAG);
-        String numFLStr = worldStr.substring(i, end);
-        parseGoalFL(numFLStr);
+        String numHaikusStr = worldStr.substring(i, end);
+        parseGoalNumHaikus(numHaikusStr);
         //Number of Moves
         i = worldStr.indexOf(Goal.NUM_MOVES_TAG) + Goal.NUM_MOVES_TAG.length();
         String numMovesStr = worldStr.substring(i);
@@ -595,23 +595,25 @@ public class World {
         getGoal().setDirection(Dir.valueOf(dirStr));
     }
 
-    private void parseGoalFL(String flStr) throws Exception {
-        if(flStr.equals(Hub.ANY)) return; //leave numFlashlightsSym null
-        int end = nextDigitIndex(flStr, 1);
-        getGoal().setNumFlashlightsSym(CompSym.fromValue(flStr.substring(0, end)));
-        getGoal().setNumFlashlights(Integer.valueOf(flStr.substring(end)));
+    private void parseGoalNumHaikus(String numHaikusStr) throws Exception {
+        //numHaikusStr contains symbol and number
+        if(numHaikusStr.equals(Hub.ANY)) return; //leave numHaikusSym null
+        int end = nextDigitIndex(numHaikusStr, 1);
+        getGoal().setNumHaikusSym(CompSym.fromValue(numHaikusStr.substring(0, end)));
+        getGoal().setNumHaikus(Integer.valueOf(numHaikusStr.substring(end)));
 
     }
 
     private void parseGoalNumMoves(String numMovesStr) throws Exception{
+        //numMovesStr contains symbol and number
         if(numMovesStr.equals(Hub.ANY)) return; //leave numMovesSym null
         int end = nextDigitIndex(numMovesStr, 1);
         getGoal().setNumMovesSym(CompSym.fromValue(numMovesStr.substring(0, end)));
         getGoal().setNumMoves(Integer.valueOf(numMovesStr.substring(end)));
     }
 
-    private List<FlashlightPoint> parseFlashlightPoints(String str, int i) throws Exception {
-        List<FlashlightPoint> pointList = new ArrayList<>();
+    private List<HaikuPoint> parseHaikuPoints(String str, int i) throws Exception {
+        List<HaikuPoint> pointList = new ArrayList<>();
         int nextPointIndex = str.indexOf('(', i);
         while(nextPointIndex >= 0) {
             int xStrStart = nextDigitIndex(str, nextPointIndex);
@@ -622,7 +624,7 @@ public class World {
             String yStr = str.substring(yStrStart, yStrEnd);
             i = yStrEnd;
             int multiplicity = 1;
-            if(str.charAt(yStrEnd + 1) == 'x') {  //more than one flashlight at this point
+            if(str.charAt(yStrEnd + 1) == 'x') {  //more than one haiku at this point
                 int multiplicityStart = yStrEnd + 2;
                 int multiplicityEnd = nextNonDigitIndex(str, multiplicityStart);
                 String multiplicityStr = str.substring(multiplicityStart, multiplicityEnd);
@@ -630,7 +632,7 @@ public class World {
                 i = multiplicityEnd;
             }
             IntPoint point = new IntPoint(Integer.valueOf(xStr), Integer.valueOf(yStr));
-            pointList.add(new FlashlightPoint(point, multiplicity));
+            pointList.add(new HaikuPoint(point, multiplicity));
             //find start of next point (or stop at next tag)
 
             while(i < str.length()) {
@@ -661,15 +663,15 @@ public class World {
         return null;
     }
 
-    private void drawFlashlight(int x, int y) {
+    private void drawHaiku(int x, int y) {
         StackPane stackPane = getPaneAt(x, y);
-        if(flashlights[x][y] == 1) {
-            ImageView flashlightIV = new ImageView(getFlashlightUrl());
-            flashlightIV.setFitHeight(getSpaceSize() - getGridLineWidth());
-            flashlightIV.setFitWidth(getSpaceSize() - getGridLineWidth());
-            flashlightIV.setId(FLASHLIGHT_ID);
-            stackPane.getChildren().add(flashlightIV);
-            StackPane.setAlignment(flashlightIV, Pos.CENTER);
+        if(haikus[x][y] == 1) {
+            ImageView haikuIV = new ImageView(getHaikuUrl());
+            haikuIV.setFitHeight(getSpaceSize() - getGridLineWidth());
+            haikuIV.setFitWidth(getSpaceSize() - getGridLineWidth());
+            haikuIV.setId(HAIKU_ID);
+            stackPane.getChildren().add(haikuIV);
+            StackPane.setAlignment(haikuIV, Pos.CENTER);
         } else drawNumber(x, y);
         //check if R2 is on this space. If so, move him to the front
         for(int i = 0; i < stackPane.getChildren().size(); i++) {
@@ -682,8 +684,8 @@ public class World {
 
     private void drawNumber(int x, int y) {
         HBox numBox = new HBox();
-        String numStr = String.valueOf(flashlights[x][y]);
-        if(flashlights[x][y] > 99) numStr = "99";
+        String numStr = String.valueOf(haikus[x][y]);
+        if(haikus[x][y] > 99) numStr = "99";
         ImageView tens;
         ImageView ones;
         if(numStr.length() > 1) {
@@ -694,10 +696,10 @@ public class World {
             ones = getNumImage(numStr.charAt(0), DecPlace.ONES);
             numBox.getChildren().add(ones);
         }
-        if(flashlights[x][y] > 99) numBox.getChildren().add(new ImageView(PLUS_URL));
+        if(haikus[x][y] > 99) numBox.getChildren().add(new ImageView(PLUS_URL));
         numBox.setAlignment(Pos.CENTER);
         numBox.setId(NUM_BOX_ID);
-        if(flashlights[x][y] > 2) {
+        if(haikus[x][y] > 2) {
             //remove existing numBox
             removeNumBox(x, y);
         }
@@ -714,19 +716,19 @@ public class World {
         }
     }
 
-    private void redrawFlashlights() {
+    private void redrawHaikus() {
         boolean recordingValue = Hub.isRecording();
         if(Hub.isRecording())
-            Hub.setRecording(false);  //this is necessary so that the add and removeFlashlight methods will update graphics
-        for(int i = 0; i < flashlights.length; i++) {
-            for(int j = 0; j < flashlights[0].length; j++) {
-                int num = flashlights[i][j];
+            Hub.setRecording(false);  //this is necessary so that the add and removeHaiku methods will update graphics
+        for(int i = 0; i < haikus.length; i++) {
+            for(int j = 0; j < haikus[0].length; j++) {
+                int num = haikus[i][j];
                 if(num >0) {
                     for(int k = 0; k < num; k++) {
-                        removeFlashlight(i, j);
+                        removeHaiku(i, j);
                     }
                     for(int m = 0; m < num; m++) {
-                        addFlashlight(i, j);
+                        addHaiku(i, j);
                     }
                 }
             }
@@ -1098,17 +1100,17 @@ public class World {
         return wallStr.toString();
     }
 
-    private String flashlightsToString() {
-        StringBuilder flashlightStr = new StringBuilder();
-        for(int i = 0; i < getFlashlights().length; i++) {
-            for(int j = 0; j < getFlashlights()[0].length; j++) {
-                int numFlashlights = getFlashlights()[i][j];
-                if(numFlashlights > 0) flashlightStr.append("(").append(i).append(",")
+    private String haikusToString() {
+        StringBuilder haikuStr = new StringBuilder();
+        for(int i = 0; i < getHaikus().length; i++) {
+            for(int j = 0; j < getHaikus()[0].length; j++) {
+                int numHaikus = getHaikus()[i][j];
+                if(numHaikus > 0) haikuStr.append("(").append(i).append(",")
                         .append(j).append(")");
-                if(numFlashlights > 1) flashlightStr.append("x").append(numFlashlights);
+                if(numHaikus > 1) haikuStr.append("x").append(numHaikus);
             }
         }
-        return flashlightStr.toString();
+        return haikuStr.toString();
     }
 
     private String goalToString() {
@@ -1121,16 +1123,16 @@ public class World {
             if(getGoal().getX() == null || r2.getX() == getGoal().getX()
             && getGoal().getY() == null || r2.getY() == getGoal().getY()
             && getGoal().getDirection() == null || getGoal().getDirection() == r2.getDirection()
-            && goalNumFlashlightsSuccess(r2)
+            && goalNumHaikusSuccess(r2)
             && goalNumMovesSuccess(r2))
                 successExitDialog("You did it!");
         }
     }
 
-    private boolean goalNumFlashlightsSuccess(R2 r2) {
-        if(getGoal().getNumFlashlightsSym() == null) return true;
-        return goalSymbolFieldSuccess(r2.getNumFlashlights(), getGoal().getNumFlashlightsSym(),
-                getGoal().getNumFlashlights());
+    private boolean goalNumHaikusSuccess(R2 r2) {
+        if(getGoal().getNumHaikusSym() == null) return true;
+        return goalSymbolFieldSuccess(r2.getNumHaikus(), getGoal().getNumHaikusSym(),
+                getGoal().getNumHaikus());
     }
 
     private boolean goalNumMovesSuccess(R2 r2) {
@@ -1170,12 +1172,12 @@ public class World {
 
     } //END OF WorldObjectList CLASS
 
-    private class FlashlightPoint {
+    private class HaikuPoint {
 
         private IntPoint intPoint;
         private int multiplicity;
 
-        public FlashlightPoint(IntPoint intPoint, int multiplicity) {
+        public HaikuPoint(IntPoint intPoint, int multiplicity) {
             this.intPoint = intPoint;
             this.multiplicity = multiplicity;
         }
@@ -1188,11 +1190,11 @@ public class World {
             return multiplicity;
         }
 
-    } //END OF FlashlightPoint CLASS
+    } //END OF HaikuPoint CLASS
 
     private class InitState {
         public WorldObjectList[][] map;
-        public int[][] flashlights;
+        public int[][] haikus;
     }
 
 } //END OF World CLASS

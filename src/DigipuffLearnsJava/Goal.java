@@ -8,15 +8,15 @@ public class Goal {
     private static final ImageView GOAL_IMG = new ImageView("images/goal.png");
     public static final String LOC_TAG = "Loc=";
     public static final String DIR_TAG = "Dir=";
-    public static final String NUM_FL_TAG = "FL=";
+    public static final String NUM_HAIKUS_TAG = "numHaikus=";
     public static final String NUM_MOVES_TAG = "Moves=";
 
     //IVARS
     private Integer x;
     private Integer y;
     private Dir direction;
-    private CompSym numFlashlightsSym;
-    private int numFlashlights;
+    private CompSym numHaikusSym;
+    private int numHaikus;
     private CompSym numMovesSym;
     private int numMoves;
     private ImageView image;
@@ -45,9 +45,9 @@ public class Goal {
 
     public int getNumMoves() { return numMoves; }
 
-    public CompSym getNumFlashlightsSym() { return numFlashlightsSym; }
+    public CompSym getNumHaikusSym() { return numHaikusSym; }
 
-    public int getNumFlashlights() { return numFlashlights; }
+    public int getNumHaikus() { return numHaikus; }
 
     public ImageView getImage() {
         if(image == null) {
@@ -58,7 +58,7 @@ public class Goal {
 
     public boolean isEmpty() {
         return (getX() == null && getY() == null && getDirection() == null
-            && getNumMovesSym() == null && getNumFlashlightsSym() == null);
+            && getNumMovesSym() == null && getNumHaikusSym() == null);
     }
 
     //SETTERS
@@ -76,10 +76,10 @@ public class Goal {
 
     public void setNumMoves(int numMoves) { this.numMoves = numMoves; }
 
-    public void setNumFlashlightsSym(CompSym symbol) { numFlashlightsSym = symbol; }
+    public void setNumHaikusSym(CompSym symbol) { numHaikusSym = symbol; }
 
-    public void setNumFlashlights(int numFlashlights) {
-        this.numFlashlights = numFlashlights;
+    public void setNumHaikus(int numHaikus) {
+        this.numHaikus = numHaikus;
     }
 
     public void setImage(ImageView image) {
@@ -91,7 +91,7 @@ public class Goal {
     public String toString() {
         return LOC_TAG + locationStr()
                 + DIR_TAG + directionStr()
-                + NUM_FL_TAG + numFlashlightsStr()
+                + NUM_HAIKUS_TAG + numHaikusStr()
                 + NUM_MOVES_TAG + numMovesStr();
     }
 
@@ -108,33 +108,23 @@ public class Goal {
     public String directionStr() {
         if(direction != null) {
             return direction.toString();
-//            switch(direction) {
-//                case EAST:
-//                    return "East";
-//                case WEST:
-//                    return "West";
-//                case NORTH:
-//                    return "North";
-//                case SOUTH:
-//                    return "South";
-//            }
         }
         return Hub.ANY;
     }
 
-    public String numFlashlightsSymStr() {
-        if(numFlashlightsSym != null) return getNumFlashlightsSym().toString();
+    public String numHaikusSymStr() {
+        if(numHaikusSym != null) return getNumHaikusSym().toString();
         return Hub.ANY;
     }
 
-    public String numFlashlightsAmtStr() {
-        if(numFlashlightsSym != null)
-            return "" + getNumFlashlights();
+    public String numHaikusAmtStr() {
+        if(numHaikusSym != null)
+            return "" + getNumHaikus();
         return "";
     }
 
-    public String numFlashlightsStr() {
-        return numFlashlightsSymStr() + numFlashlightsAmtStr();
+    public String numHaikusStr() {
+        return numHaikusSymStr() + numHaikusAmtStr();
     }
 
     public String numMovesSymStr() {

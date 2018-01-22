@@ -5,6 +5,6 @@ public enum Action {
     MOVE,
     TURN_LEFT,
     TURN_RIGHT,
-    PICK_UP_FL,
-    PLACE_FL,
+    PICK_UP_HAIKU,
+    PLACE_HAIKU,
 }

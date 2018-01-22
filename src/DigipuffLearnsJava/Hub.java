@@ -40,7 +40,7 @@ public final class Hub {
     private static Thread recordingThread;
     private static Task recordingTask;
     private static BooleanProperty playbackFinished = new SimpleBooleanProperty(false);
-    private static List<R2Action> actionList;
+    private static List<DigiAction> actionList;
     private static Transition currentAnimation;
     private static boolean animationFinished = true;
 
@@ -266,11 +266,11 @@ public final class Hub {
             case TURN_RIGHT:
                 r2.turnRight();
                 break;
-            case PICK_UP_FL:
-                r2.pickUpFlashlight();
+            case PICK_UP_HAIKU:
+                r2.pickUpHaiku();
                 break;
-            case PLACE_FL:
-                r2.placeFlashlight();
+            case PLACE_HAIKU:
+                r2.placeHaiku();
                 break;
         }
     }

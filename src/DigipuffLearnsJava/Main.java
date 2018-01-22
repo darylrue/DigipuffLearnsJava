@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     //CONSTANTS
-    public static final int INFINITE = -1;  //used for initial number of haikus Digipuff has
+    public static final int INFINITE = -1;  //used for initial # of haikus Digipuff has (also available to subclasses)
 
     //IVARS
     private Thread recordingThread;
@@ -37,7 +37,7 @@ public class Main extends Application {
     }
 
     public String getWorldUrl() {
-        return "worlds/demo.world";
+        return "demo.world";
     }
 
     private void preLayout() {
@@ -70,7 +70,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(Main.class.getResource
                 ("style.css").toExternalForm());
-        Hub.getMainStage().setTitle("R2 Learns Java");
+        Hub.getMainStage().setTitle("Digipuff Learns Java");
         Hub.getMainStage().setScene(scene);
         Hub.getMainStage().setOnCloseRequest(e -> System.exit(0));
         if(!Hub.isExiting()) Hub.getMainStage().show();
@@ -85,52 +85,52 @@ public class Main extends Application {
     }
 
     private void demo() {
-        R2 darth = new Darth("Darth", 0, 1, Dir.EAST, INFINITE);
-        darth.spawn();
-        R2 r2 = new R2("R2", 0, 0, Dir.EAST, 0);
+        R2 fido = new Fido("Fido", 0, 1, Dir.EAST, INFINITE);
+        fido.spawn();
+        R2 r2 = new R2("Digipuff", 0, 0, Dir.EAST, 0);
         r2.spawn();
         for(int i = 0; i < 6; i++) {
             r2.move();
-            darth.move();
+            fido.move();
         }
         r2.move();
-        darth.turnLeft();
+        fido.turnLeft();
         r2.turnLeft();
-        darth.move();
+        fido.move();
         r2.move();
-        darth.move();
+        fido.move();
         r2.move();
-        darth.pickUpFlashlight();
+        fido.pickUpHaiku();
         r2.move();
-        darth.turnRight();
+        fido.turnRight();
         r2.turnLeft();
-        darth.turnRight();
+        fido.turnRight();
         for(int i = 0; i < 5; i++) {
-            darth.move();
+            fido.move();
             r2.move();
-            darth.turnLeft();
+            fido.turnLeft();
             r2.turnLeft();
         }
-        darth.placeFlashlight();
-        darth.move();
+        fido.placeHaiku();
+        fido.move();
         r2.move();
-        r2.pickUpFlashlight();
+        r2.pickUpHaiku();
         r2.turnRight();
-        darth.turnLeft();
+        fido.turnLeft();
         r2.turnRight();
-        darth.move();
+        fido.move();
         r2.move();
-        darth.move();
+        fido.move();
         r2.move();
         r2.turnLeft();
-        darth.turnLeft();
+        fido.turnLeft();
         for(int i = 0; i < 3; i++) {
             r2.move();
-            darth.move();
+            fido.move();
         }
         r2.turnLeft();
         r2.move();
-        darth.move();
+        fido.move();
         r2.turnLeft();
     }
 

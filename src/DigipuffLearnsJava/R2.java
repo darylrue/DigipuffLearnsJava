@@ -27,7 +27,7 @@ public class R2 implements SolidObject{
     private int y;
     private ImageView image;
     private Dir direction;
-    private IntegerProperty numFlashlights;
+    private IntegerProperty numHaikus;
     private IntegerProperty totalMoves;
     private String name;
     private ImageView currentWorldImage;
@@ -36,14 +36,13 @@ public class R2 implements SolidObject{
     private double gridUnit;
 
     //CONSTRUCTORS
-    public R2(String name, int x, int y, Dir initDirection, int numFlashlights) {
+    public R2(String name, int x, int y, Dir initDirection, int numHaikus) {
         this.name = name;
         this.x = x;
         this.y = y;
         this.direction = initDirection;
-        this.numFlashlights = new SimpleIntegerProperty(numFlashlights);
+        this.numHaikus = new SimpleIntegerProperty(numHaikus);
         this.totalMoves = new SimpleIntegerProperty(0);
-        setDefaultGraphics();
     }
 
     //GETTERS
@@ -67,8 +66,8 @@ public class R2 implements SolidObject{
         return direction;
     }
 
-    public int getNumFlashlights() {
-        return numFlashlights.get();
+    public int getNumHaikus() {
+        return numHaikus.get();
     }
 
     public int getTotalMoves() {
@@ -107,14 +106,14 @@ public class R2 implements SolidObject{
         return !frontIsBlocked();
     }
 
-    public boolean hasFlashlight() { return Hub.getWorld().isFlashlightAt(getX(), getY()); }
+    public boolean spaceHasHaiku() { return Hub.getWorld().isHaikuAt(getX(), getY()); }
 
     private ImageView getImage() {
         return image;
     }
 
-    private IntegerProperty numFlashlightsProperty() {
-        return numFlashlights;
+    private IntegerProperty numHaikusProperty() {
+        return numHaikus;
     }
 
     private IntegerProperty totalMovesProperty() {
@@ -141,8 +140,8 @@ public class R2 implements SolidObject{
         this.direction = direction;
     }
 
-    private void setNumFlashlights(int numFlashlights) {
-        this.numFlashlights.set(numFlashlights);
+    private void setNumHaikus(int numHaikus) {
+        this.numHaikus.set(numHaikus);
     }
 
     //rotates the east image into the proper orientation based on direction
@@ -173,7 +172,7 @@ public class R2 implements SolidObject{
     public void move() {
         if(!spawned) return;
         if(Hub.isRecording()) {
-            Hub.getWorld().addAction(new R2Action(this, Action.MOVE));
+            Hub.getWorld().addAction(new DigiAction(this, Action.MOVE));
         }
         if(frontIsBlocked()) {
             if(Hub.isRecording()) {
@@ -239,7 +238,7 @@ public class R2 implements SolidObject{
     public void turnRight() {
         if(!spawned) return;
         if(Hub.isRecording()) {
-            Hub.getWorld().addAction(new R2Action(this, Action.TURN_RIGHT));
+            Hub.getWorld().addAction(new DigiAction(this, Action.TURN_RIGHT));
             updateDirAfterRightTurn();
         } else { //not recording
             //rotate 90 degrees cw
@@ -276,7 +275,7 @@ public class R2 implements SolidObject{
     public void turnLeft() {
         if(!spawned) return;
         if(Hub.isRecording()) {
-            Hub.getWorld().addAction(new R2Action(this, Action.TURN_LEFT));
+            Hub.getWorld().addAction(new DigiAction(this, Action.TURN_LEFT));
             updateDirAfterLeftTurn();
         } else { //not recording
             //rotate 90 degrees ccw
@@ -331,19 +330,19 @@ public class R2 implements SolidObject{
         this.currentWorldImage = newImage;
     }
 
-    public void placeFlashlight() {
+    public void placeHaiku() {
         if(!spawned) return;
-        if(Hub.isRecording()) Hub.getWorld().addAction(new R2Action(this, Action.PLACE_FL));
-        if(getNumFlashlights() == 0) {
-            if(!Hub.isRecording()) outOfFlashlights();  //do this only if we are in the replay
+        if(Hub.isRecording()) Hub.getWorld().addAction(new DigiAction(this, Action.PLACE_HAIKU));
+        if(getNumHaikus() == 0) {
+            if(!Hub.isRecording()) outOfHaikus();  //do this only if we are in the replay
             return;
         }
         if(Hub.isRecording()) {
-            updateWorldAfterPlaceFlashlight();
+            updateWorldAfterPlaceHaiku();
         } else { //not recording
             PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
             pt.setOnFinished(e -> {
-                updateWorldAfterPlaceFlashlight();
+                updateWorldAfterPlaceHaiku();
                 setTotalMoves(getTotalMoves() + 1);
                 Hub.nextAction();
             });
@@ -353,25 +352,25 @@ public class R2 implements SolidObject{
         }
     }
 
-    private void updateWorldAfterPlaceFlashlight() {
-        if(getNumFlashlights() > 0) {
-            setNumFlashlights(getNumFlashlights() - 1);
+    private void updateWorldAfterPlaceHaiku() {
+        if(getNumHaikus() > 0) {
+            setNumHaikus(getNumHaikus() - 1);
         }
-        //otherwise, numFlashlights is infinite (-1)
+        //otherwise, numHaikus is infinite (-1)
         int x = getX();
         int y = getY();
-        Hub.getWorld().addFlashlight(x, y);
+        Hub.getWorld().addHaiku(x, y);
     }
 
-    public void pickUpFlashlight() {
+    public void pickUpHaiku() {
         if(!spawned) return;
         if(Hub.isRecording()) {
-            Hub.getWorld().addAction(new R2Action(this, Action.PICK_UP_FL));
+            Hub.getWorld().addAction(new DigiAction(this, Action.PICK_UP_HAIKU));
         }
         int x = getX();
         int y = getY();
-        if(!Hub.getWorld().isFlashlightAt(x, y)) {
-            if(!Hub.isRecording()) noFlashlightToPickUp();
+        if(!Hub.getWorld().isHaikuAt(x, y)) {
+            if(!Hub.isRecording()) noHaikuToPickup();
             PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
             pt.setOnFinished(e -> Hub.nextAction());
             Hub.setCurrentAnimation(pt);
@@ -379,11 +378,11 @@ public class R2 implements SolidObject{
             return;
         }
         if(Hub.isRecording()) {
-            updateWorldAfterPickUpFlashlight(x, y);
+            updateWorldAfterPickupHaiku(x, y);
         } else { //not recording
             PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
             pt.setOnFinished(e -> {
-                updateWorldAfterPickUpFlashlight(x, y);
+                updateWorldAfterPickupHaiku(x, y);
                 setTotalMoves(getTotalMoves() + 1);
                 Hub.nextAction();
             });
@@ -393,23 +392,23 @@ public class R2 implements SolidObject{
         }
     }
 
-    private void updateWorldAfterPickUpFlashlight(int x, int y) {
-        Hub.getWorld().removeFlashlight(x, y);
-        if(getNumFlashlights() >= 0) {   //not infinite (-1)
-            setNumFlashlights(getNumFlashlights() + 1);
+    private void updateWorldAfterPickupHaiku(int x, int y) {
+        Hub.getWorld().removeHaiku(x, y);
+        if(getNumHaikus() >= 0) {   //not infinite (-1)
+            setNumHaikus(getNumHaikus() + 1);
         }
     }
 
-    private void outOfFlashlights() {
-        Hub.pausedDialog(getName() + ", you don't have any flashlights!");
+    private void outOfHaikus() {
+        Hub.pausedDialog(getName() + ", you don't have any haikus!");
     }
 
-    private void noFlashlightToPickUp() {
-        Hub.pausedDialog(getName() + ", there aren't any flashlights to pick up!");
+    private void noHaikuToPickup() {
+        Hub.pausedDialog(getName() + ", there aren't any haikus to pick up!");
     }
 
     public void spawn() {
-        if(Hub.isRecording()) Hub.getWorld().addAction(new R2Action(this, Action.SPAWN));
+        if(Hub.isRecording()) Hub.getWorld().addAction(new DigiAction(this, Action.SPAWN));
         if(spawned) {
             if(!Hub.isRecording()) Hub.pausedDialog(getName() + ", you can't spawn yourself more than once!");
             return;
@@ -451,7 +450,7 @@ public class R2 implements SolidObject{
         initState.x = getX();
         initState.y = getY();
         initState.initDirection = getDirection();
-        initState.numFlashlights = getNumFlashlights();
+        initState.numHaikus = getNumHaikus();
     }
 
     private void reset() {
@@ -461,7 +460,7 @@ public class R2 implements SolidObject{
         setX(initState.x);
         setY(initState.y);
         setDirection(initState.initDirection);
-        setNumFlashlights(initState.numFlashlights);
+        setNumHaikus(initState.numHaikus);
     }
 
     private void removeR2() {
@@ -505,29 +504,29 @@ public class R2 implements SolidObject{
         nameLabel.getStyleClass().add("header-text");
         nameHBox.getChildren().add(nameLabel);
 
-        //Number of flashlights indicator
-        HBox numFlashlightsHBox = new HBox(10);
-        numFlashlightsHBox.setPadding(new Insets(0,0,0,25));
-        Label numFlashlightsText = new Label("Flashlights:");
-        numFlashlightsText.getStyleClass().add("styled-text");
-        Label cBarNumFlashlightsValue;
-        if(getNumFlashlights() == -1) {
-            cBarNumFlashlightsValue = new Label(INFINITE);
+        //Number of haikus indicator
+        HBox numHaikusHBox = new HBox(10);
+        numHaikusHBox.setPadding(new Insets(0,0,0,25));
+        Label numHaikusText = new Label("Haikus:");
+        numHaikusText.getStyleClass().add("styled-text");
+        Label cBarNumHaikusValue;
+        if(getNumHaikus() == -1) {
+            cBarNumHaikusValue = new Label(INFINITE);
         } else {
-            cBarNumFlashlightsValue = new Label(String.valueOf(getNumFlashlights()));
+            cBarNumHaikusValue = new Label(String.valueOf(getNumHaikus()));
         }
-        cBarNumFlashlightsValue.getStyleClass().add("styled-text");
-        numFlashlightsProperty().addListener(((observable, oldValue, newValue) -> {
+        cBarNumHaikusValue.getStyleClass().add("styled-text");
+        numHaikusProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue != null && !newValue.equals(oldValue)) {
                 if(newValue.intValue() == -1) {
-                    Platform.runLater(() -> cBarNumFlashlightsValue.setText(INFINITE));
+                    Platform.runLater(() -> cBarNumHaikusValue.setText(INFINITE));
                 } else {
                     Platform.runLater(() ->
-                            cBarNumFlashlightsValue.setText(String.valueOf(newValue)));
+                            cBarNumHaikusValue.setText(String.valueOf(newValue)));
                 }
             }
         }));
-        numFlashlightsHBox.getChildren().addAll(numFlashlightsText, cBarNumFlashlightsValue);
+        numHaikusHBox.getChildren().addAll(numHaikusText, cBarNumHaikusValue);
 
         //Total number of moves indicator
         HBox totalMovesHBox = new HBox(10);
@@ -544,14 +543,8 @@ public class R2 implements SolidObject{
         }));
         totalMovesHBox.getChildren().addAll(totalMovesText, totalMovesValue);
         VBox indicatorBox = new VBox(10);
-        indicatorBox.getChildren().addAll(nameHBox, numFlashlightsHBox, totalMovesHBox);
+        indicatorBox.getChildren().addAll(nameHBox, numHaikusHBox, totalMovesHBox);
         Hub.getControlBar().getMainVBox().getChildren().addAll(indicatorBox);
-    }
-
-    private void setDefaultGraphics() {
-        R2Images images = new R2Images();
-        images.setEastImageUrl(EAST_IMAGE_URL);
-        images.setCrashImageUrl(CRASH_IMAGE_URL);
     }
 
     private void initImages() {
@@ -585,7 +578,7 @@ public class R2 implements SolidObject{
         public int x;
         public int y;
         public Dir initDirection;
-        public int numFlashlights;
+        public int numHaikus;
 
         public void restore() { reset(); }
     }

@@ -44,10 +44,10 @@ public class WorldGenController implements Initializable {
     @FXML private ComboBox<Integer> numHorizSpacesCB;
     @FXML private LimitedTextField spaceSizeTF;
     @FXML private ToggleButton wallBtn;
-    @FXML private ToggleButton addFlashlightBtn;
-    @FXML private ToggleButton remFlashlightBtn;
-    @FXML private LimitedTextField flashlightAddAmt;
-    @FXML private LimitedTextField remFlashlightAmt;
+    @FXML private ToggleButton addHaikuBtn;
+    @FXML private ToggleButton remHaikuBtn;
+    @FXML private LimitedTextField haikuAddAmt;
+    @FXML private LimitedTextField remHaikuAmt;
     @FXML private ToggleButton goalBtn;
     @FXML private MenuBar menuBar;
     @FXML private Menu fileMenu;
@@ -61,7 +61,7 @@ public class WorldGenController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Hub.setRecording(false);  //otherwise flashlights won't update on the screen
+        Hub.setRecording(false);  //otherwise haikus won't update on the screen
         loadPrefs();
         initComboBoxes();
         initTextFields();
@@ -83,7 +83,7 @@ public class WorldGenController implements Initializable {
         dirCB.getItems().addAll(Hub.ANY, Dir.EAST.toString(), Dir.WEST.toString(),
                 Dir.NORTH.toString(), Dir.SOUTH.toString());
         dirCB.setValue(Hub.ANY);
-        //Goal numFlashlights Symbol Combo Box
+        //Goal numHaikus Symbol Combo Box
         populateSymCB(numFLSymCB);
         numFLAmtTF.setVisible(false);
         populateSymCB(numMovesSymCB);
@@ -180,7 +180,7 @@ public class WorldGenController implements Initializable {
     }
 
     @FXML
-    private void flashlightBtnClick() {
+    private void haikuBtnClick() {
 
     }
 
@@ -204,18 +204,18 @@ public class WorldGenController implements Initializable {
     private void setNumFLSym() {
         if(loading) return;
         if(numFLSymCB.getValue().equals(Hub.ANY)) {
-            world.getGoal().setNumFlashlightsSym(null);
+            world.getGoal().setNumHaikusSym(null);
             numFLAmtTF.setVisible(false);
             return;
         }
-        world.getGoal().setNumFlashlightsSym(CompSym.fromValue((numFLSymCB.getValue())));
+        world.getGoal().setNumHaikusSym(CompSym.fromValue((numFLSymCB.getValue())));
         numFLAmtTF.setVisible(true);
     }
 
     @FXML
     private void setNumFLAmt() {
-        if(world.getGoal().getNumFlashlightsSym() == null || numFLAmtTF.getText().equals("")) return;
-        world.getGoal().setNumFlashlights(Integer.valueOf(numFLAmtTF.getText()));
+        if(world.getGoal().getNumHaikusSym() == null || numFLAmtTF.getText().equals("")) return;
+        world.getGoal().setNumHaikus(Integer.valueOf(numFLAmtTF.getText()));
     }
 
     @FXML
@@ -263,11 +263,9 @@ public class WorldGenController implements Initializable {
             numVertSpacesCB.setValue(world.getNumVertSpaces());
             System.out.println("direction: " + world.getGoal().directionStr());
             dirCB.setValue(world.getGoal().directionStr());
-            System.out.println("flashlight symbol: " + world.getGoal().numFlashlightsSymStr());
-            numFLSymCB.setValue(world.getGoal().numFlashlightsSymStr());
-            System.out.println("flashlight amt: " + world.getGoal().numFlashlightsAmtStr());
-            if(world.getGoal().getNumFlashlightsSym() != null)
-                numFLAmtTF.setText(world.getGoal().numFlashlightsAmtStr());
+            numFLSymCB.setValue(world.getGoal().numHaikusSymStr());
+            if(world.getGoal().getNumHaikusSym() != null)
+                numFLAmtTF.setText(world.getGoal().numHaikusAmtStr());
             else numFLAmtTF.setText("0");
             if(numFLSymCB.getValue().equals(Hub.ANY))
                 numFLAmtTF.setVisible(false);
@@ -404,8 +402,8 @@ public class WorldGenController implements Initializable {
         if(world.isGoal(x, y)) return true;
         //wall
         if(world.getNumWallsAt(x, y) > 0) return true;
-        //flashlights
-        if(world.isFlashlightAt(x, y)) return true;
+        //haikus
+        if(world.isHaikuAt(x, y)) return true;
         return false;
     }
 
@@ -447,7 +445,7 @@ public class WorldGenController implements Initializable {
                 changeSpaceSize();
             }
         }));
-        //Text formatter for goal num flashlights field
+        //Text formatter for goal num haikus field
         numFLAmtTF.setTextFormatter(new TextFormatter<>(getIntegerConverter(), 0,
                 getIntegerFilter()));
         numFLAmtTF.focusedProperty().addListener(((observable, oldValue, newValue) -> {
@@ -463,11 +461,11 @@ public class WorldGenController implements Initializable {
                 setNumMovesAmt();
             }
         }));
-        //Text formatter for add Flashlight field
-        flashlightAddAmt.setTextFormatter(new TextFormatter<>(getIntegerConverter(),
+        //Text formatter for add haiku field
+        haikuAddAmt.setTextFormatter(new TextFormatter<>(getIntegerConverter(),
                 1, getIntegerFilter()));
-        //Text formatter for remove Flashlight field
-        remFlashlightAmt.setTextFormatter(new TextFormatter<>(getIntegerConverter(),
+        //Text formatter for remove haiku field
+        remHaikuAmt.setTextFormatter(new TextFormatter<>(getIntegerConverter(),
                 1, getIntegerFilter()));
 
     }
@@ -523,8 +521,8 @@ public class WorldGenController implements Initializable {
     }
 
     private void northClick(StackPane gridCell) {
-        if(addFlashlightBtn.isSelected()) addFlashlightClick(gridCell);
-        if(remFlashlightBtn.isSelected()) remFlashlightClick(gridCell);
+        if(addHaikuBtn.isSelected()) addHaikuClick(gridCell);
+        if(remHaikuBtn.isSelected()) remHaikuClick(gridCell);
         if(goalBtn.isSelected()) goalClick(gridCell);
         if(wallBtn.isSelected()) {
             IntPoint p1 = getCoord(gridCell);
@@ -541,8 +539,8 @@ public class WorldGenController implements Initializable {
     }
 
     private void southClick(StackPane gridCell) {
-        if(addFlashlightBtn.isSelected()) addFlashlightClick(gridCell);
-        if(remFlashlightBtn.isSelected()) remFlashlightClick(gridCell);
+        if(addHaikuBtn.isSelected()) addHaikuClick(gridCell);
+        if(remHaikuBtn.isSelected()) remHaikuClick(gridCell);
         if(goalBtn.isSelected()) goalClick(gridCell);
         if(wallBtn.isSelected()) {
             IntPoint p1 = getCoord(gridCell);
@@ -559,8 +557,8 @@ public class WorldGenController implements Initializable {
     }
 
     private void eastClick(StackPane gridCell) {
-        if(addFlashlightBtn.isSelected()) addFlashlightClick(gridCell);
-        if(remFlashlightBtn.isSelected()) remFlashlightClick(gridCell);
+        if(addHaikuBtn.isSelected()) addHaikuClick(gridCell);
+        if(remHaikuBtn.isSelected()) remHaikuClick(gridCell);
         if(goalBtn.isSelected()) goalClick(gridCell);
         if(wallBtn.isSelected()) {
             IntPoint p1 = getCoord(gridCell);
@@ -577,8 +575,8 @@ public class WorldGenController implements Initializable {
     }
 
     private void westClick(StackPane gridCell) {
-        if(addFlashlightBtn.isSelected()) addFlashlightClick(gridCell);
-        if(remFlashlightBtn.isSelected()) remFlashlightClick(gridCell);
+        if(addHaikuBtn.isSelected()) addHaikuClick(gridCell);
+        if(remHaikuBtn.isSelected()) remHaikuClick(gridCell);
         if(goalBtn.isSelected()) goalClick(gridCell);
         if(wallBtn.isSelected()) {
             IntPoint p1 = getCoord(gridCell);
@@ -595,30 +593,30 @@ public class WorldGenController implements Initializable {
     }
 
     private void centerClick(StackPane gridCell) {
-        if(addFlashlightBtn.isSelected()) addFlashlightClick(gridCell);
-        if(remFlashlightBtn.isSelected()) remFlashlightClick(gridCell);
+        if(addHaikuBtn.isSelected()) addHaikuClick(gridCell);
+        if(remHaikuBtn.isSelected()) remHaikuClick(gridCell);
         if(goalBtn.isSelected()) goalClick(gridCell);
     }
 
-    private void addFlashlightClick(StackPane gridCell) {
+    private void addHaikuClick(StackPane gridCell) {
         IntPoint coord = getCoord(gridCell);
-        String addAmtStr = flashlightAddAmt.getText();
+        String addAmtStr = haikuAddAmt.getText();
         if(addAmtStr.equals("")) addAmtStr = "1";
         int addAmt = Integer.valueOf(addAmtStr);
         for(int i = 0; i < addAmt; i++) {
-            world.addFlashlight(coord.getX(), coord.getY());
+            world.addHaiku(coord.getX(), coord.getY());
         }
     }
 
-    private void remFlashlightClick(StackPane gridCell) {
+    private void remHaikuClick(StackPane gridCell) {
         IntPoint coord = getCoord(gridCell);
-        if(!world.isFlashlightAt(coord.getX(), coord.getY())) return;
-        String remAmtStr = remFlashlightAmt.getText();
+        if(!world.isHaikuAt(coord.getX(), coord.getY())) return;
+        String remAmtStr = remHaikuAmt.getText();
         if(remAmtStr.equals("")) remAmtStr = "1";
         int remAmt = Integer.valueOf(remAmtStr);
         for(int i = 0; i < remAmt; i++) {
-            if(world.isFlashlightAt(coord.getX(), coord.getY()))
-                world.removeFlashlight(coord.getX(), coord.getY());
+            if(world.isHaikuAt(coord.getX(), coord.getY()))
+                world.removeHaiku(coord.getX(), coord.getY());
         }
     }
 

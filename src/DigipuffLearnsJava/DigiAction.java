@@ -1,6 +1,6 @@
 package DigipuffLearnsJava;
 
-public class R2Action {
+public class DigiAction {
 
     //CONSTANTS
 
@@ -9,7 +9,7 @@ public class R2Action {
     private Action action;
 
     //CONSTRUCTORS
-    public R2Action(R2 r2, Action action) {
+    public DigiAction(R2 r2, Action action) {
         this.r2 = r2;
         this.action = action;
     }
