@@ -82,7 +82,7 @@ public final class Hub {
         return playbackFinished.get();
     }
 
-    public static double getMoveTime() { return calculatePauseTime() / 1_000_000; }
+    public static double getMoveTime() { return 500 / Math.pow(getSpeed(), 1.3); }
 
     public static Transition getCurrentAnimation() { return currentAnimation; }
 
@@ -201,8 +201,8 @@ public final class Hub {
         //reset the world
         getWorld().prepareForReplay();
         //reset all R2s
-        for(R2 r2: getWorld().r2List()) {
-            r2.getInitState().restore();
+        for(Digipuff digipuff : getWorld().r2List()) {
+            digipuff.getInitState().restore();
         }
 
         //set currentAnimation to a PauseTransition
@@ -218,9 +218,9 @@ public final class Hub {
 
     public static void nextAction() {
         if(actionIndex < actionList.size()) {
-            R2 r2 = actionList.get(actionIndex).getR2();
+            Digipuff digipuff = actionList.get(actionIndex).getDigipuff();
             Action action = actionList.get(actionIndex).getAction();
-            doAction(r2, action);
+            doAction(digipuff, action);
             actionIndex++;
         } else { //there are no more actions to be performed
             checkMaxMovesReached();
@@ -252,25 +252,25 @@ public final class Hub {
         setPaused(true);
     }
 
-    private static void doAction(R2 r2, Action action) {
+    private static void doAction(Digipuff digipuff, Action action) {
         switch(action) {
             case SPAWN:
-                r2.spawn();
+                digipuff.spawn();
                 break;
             case MOVE:
-                r2.move();
+                digipuff.move();
                 break;
             case TURN_LEFT:
-                r2.turnLeft();
+                digipuff.turnLeft();
                 break;
             case TURN_RIGHT:
-                r2.turnRight();
+                digipuff.turnRight();
                 break;
             case PICK_UP_HAIKU:
-                r2.pickUpHaiku();
+                digipuff.pickUpHaiku();
                 break;
             case PLACE_HAIKU:
-                r2.placeHaiku();
+                digipuff.placeHaiku();
                 break;
         }
     }

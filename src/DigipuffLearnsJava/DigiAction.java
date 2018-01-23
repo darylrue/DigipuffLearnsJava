@@ -5,18 +5,18 @@ public class DigiAction {
     //CONSTANTS
 
     //IVARS
-    private R2 r2;
+    private Digipuff digipuff;
     private Action action;
 
     //CONSTRUCTORS
-    public DigiAction(R2 r2, Action action) {
-        this.r2 = r2;
+    public DigiAction(Digipuff digipuff, Action action) {
+        this.digipuff = digipuff;
         this.action = action;
     }
 
     //GETTERS
-    public R2 getR2() {
-        return this.r2;
+    public Digipuff getDigipuff() {
+        return this.digipuff;
     }
 
     public Action getAction() {

@@ -85,53 +85,58 @@ public class Main extends Application {
     }
 
     private void demo() {
-        R2 fido = new Fido("Fido", 0, 1, Dir.EAST, INFINITE);
+        Digipuff digipuff = new Digipuff("Digipuff", 0, 0, Dir.EAST, 0);
+        digipuff.spawn();
+        Fido fido = new Fido("Fido", 0, 1, Dir.EAST, INFINITE);
         fido.spawn();
-        R2 r2 = new R2("Digipuff", 0, 0, Dir.EAST, 0);
-        r2.spawn();
         for(int i = 0; i < 6; i++) {
-            r2.move();
+            digipuff.move();
             fido.move();
         }
-        r2.move();
+        digipuff.move();
         fido.turnLeft();
-        r2.turnLeft();
+        digipuff.turnLeft();
         fido.move();
-        r2.move();
+        digipuff.move();
         fido.move();
-        r2.move();
+        digipuff.move();
         fido.pickUpHaiku();
-        r2.move();
+        digipuff.move();
         fido.turnRight();
-        r2.turnLeft();
+        digipuff.turnLeft();
         fido.turnRight();
         for(int i = 0; i < 5; i++) {
             fido.move();
-            r2.move();
+            digipuff.move();
             fido.turnLeft();
-            r2.turnLeft();
+            digipuff.turnLeft();
         }
         fido.placeHaiku();
         fido.move();
-        r2.move();
-        r2.pickUpHaiku();
-        r2.turnRight();
+        digipuff.move();
+        digipuff.pickUpHaiku();
         fido.turnLeft();
-        r2.turnRight();
-        fido.move();
-        r2.move();
-        fido.move();
-        r2.move();
-        r2.turnLeft();
+        digipuff.turnRight();
         fido.turnLeft();
-        for(int i = 0; i < 3; i++) {
-            r2.move();
+        digipuff.turnRight();
+        digipuff.move();
+        fido.move();
+        digipuff.move();
+        fido.turnRight();
+        fido.move();
+        digipuff.turnLeft();
+        digipuff.move();
+        fido.move();
+        fido.turnLeft();
+        for(int i = 0; i < 2; i++) {
+            digipuff.move();
             fido.move();
         }
-        r2.turnLeft();
-        r2.move();
+        digipuff.turnLeft();
+        digipuff.move();
         fido.move();
-        r2.turnLeft();
+        digipuff.turnLeft();
+        fido.turnLeft();
     }
 
 } //END OF CLASS

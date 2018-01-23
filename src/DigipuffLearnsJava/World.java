@@ -67,7 +67,7 @@ public class World {
     private double gridLineWidth;
     private String haikuUrl;
     private WorldObjectList[][] map;
-    private List<R2> r2List;
+    private List<Digipuff> digipuffList;
     private ArrayList<DigiAction> actions;
     private boolean actionSequenceStarted = false;
     private InitState initState;
@@ -167,9 +167,9 @@ public class World {
         return null;
     }
 
-    public List<R2> r2List() {
-        if(r2List == null) r2List = new ArrayList<R2>();
-        return r2List;
+    public List<Digipuff> r2List() {
+        if(digipuffList == null) digipuffList = new ArrayList<Digipuff>();
+        return digipuffList;
     }
 
     private List<DigiAction> getActions() {
@@ -673,7 +673,7 @@ public class World {
             stackPane.getChildren().add(haikuIV);
             StackPane.setAlignment(haikuIV, Pos.CENTER);
         } else drawNumber(x, y);
-        //check if R2 is on this space. If so, move him to the front
+        //check if Digipuff is on this space. If so, move him to the front
         for(int i = 0; i < stackPane.getChildren().size(); i++) {
             Node node = stackPane.getChildren().get(i);
             if(node.getId() != null && node.getId().equals(Hub.R2_ID)) {
@@ -1119,25 +1119,25 @@ public class World {
 
     public void checkGoal() {
         if(getGoal().isEmpty()) return;
-        for(R2 r2: r2List()) {
-            if(getGoal().getX() == null || r2.getX() == getGoal().getX()
-            && getGoal().getY() == null || r2.getY() == getGoal().getY()
-            && getGoal().getDirection() == null || getGoal().getDirection() == r2.getDirection()
-            && goalNumHaikusSuccess(r2)
-            && goalNumMovesSuccess(r2))
+        for(Digipuff digipuff : r2List()) {
+            if(getGoal().getX() == null || digipuff.getX() == getGoal().getX()
+            && getGoal().getY() == null || digipuff.getY() == getGoal().getY()
+            && getGoal().getDirection() == null || getGoal().getDirection() == digipuff.getDirection()
+            && goalNumHaikusSuccess(digipuff)
+            && goalNumMovesSuccess(digipuff))
                 successExitDialog("You did it!");
         }
     }
 
-    private boolean goalNumHaikusSuccess(R2 r2) {
+    private boolean goalNumHaikusSuccess(Digipuff digipuff) {
         if(getGoal().getNumHaikusSym() == null) return true;
-        return goalSymbolFieldSuccess(r2.getNumHaikus(), getGoal().getNumHaikusSym(),
+        return goalSymbolFieldSuccess(digipuff.getNumHaikus(), getGoal().getNumHaikusSym(),
                 getGoal().getNumHaikus());
     }
 
-    private boolean goalNumMovesSuccess(R2 r2) {
+    private boolean goalNumMovesSuccess(Digipuff digipuff) {
         if(getGoal().getNumMovesSym() == null) return true;
-        return goalSymbolFieldSuccess(r2.getTotalMoves(), getGoal().getNumMovesSym(),
+        return goalSymbolFieldSuccess(digipuff.getTotalMoves(), getGoal().getNumMovesSym(),
                 getGoal().getNumMoves());
     }
 

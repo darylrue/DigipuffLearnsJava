@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
-public class R2 implements SolidObject{
+public class Digipuff implements SolidObject{
 
     //CONSTANTS
     private static final String EAST_IMAGE_URL ="images/digipuff.png";
@@ -36,7 +36,7 @@ public class R2 implements SolidObject{
     private double gridUnit;
 
     //CONSTRUCTORS
-    public R2(String name, int x, int y, Dir initDirection, int numHaikus) {
+    public Digipuff(String name, int x, int y, Dir initDirection, int numHaikus) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -185,6 +185,9 @@ public class R2 implements SolidObject{
         }
         if(!Hub.isRecording()) {
             TranslateTransition tt = new TranslateTransition(Duration.millis(Hub.getMoveTime()), this.currentWorldImage);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
+            SequentialTransition st = new SequentialTransition(tt, pt);
             switch(getDirection()) {
                 case EAST:
                     tt.setByX(this.gridUnit);
@@ -203,12 +206,12 @@ public class R2 implements SolidObject{
                     tt.setByY(this.gridUnit);
                     break;
             }
-            tt.setOnFinished(e -> {
+            st.setOnFinished(e -> {
                 updateWorldAfterMove();
                 setTotalMoves(getTotalMoves() + 1);
                 Hub.nextAction();
             });
-            Hub.setCurrentAnimation(tt);
+            Hub.setCurrentAnimation(st);
             if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             //if it is paused, this animation will begin when the start button is clicked
         } else {  //recording
@@ -244,12 +247,14 @@ public class R2 implements SolidObject{
             //rotate 90 degrees cw
             RotateTransition rt = new RotateTransition(Duration.millis(Hub.getMoveTime()), this.currentWorldImage);
             rt.setByAngle(90);
-            rt.setOnFinished(e -> {
+            PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
+            SequentialTransition st = new SequentialTransition(rt, pt);
+            st.setOnFinished(e -> {
                 updateDirAfterRightTurn();
                 setTotalMoves(getTotalMoves() + 1);
                 Hub.nextAction();
             });
-            Hub.setCurrentAnimation(rt);
+            Hub.setCurrentAnimation(st);
             if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             //if it is paused, this animation will begin when the start button is clicked
         }
@@ -281,12 +286,14 @@ public class R2 implements SolidObject{
             //rotate 90 degrees ccw
             RotateTransition rt = new RotateTransition(Duration.millis(Hub.getMoveTime()), this.currentWorldImage);
             rt.setByAngle(-90);
-            rt.setOnFinished(e -> {
+            PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
+            SequentialTransition st = new SequentialTransition(rt, pt);
+            st.setOnFinished(e -> {
                 updateDirAfterLeftTurn();
                 setTotalMoves(getTotalMoves() + 1);
                 Hub.nextAction();
             });
-            Hub.setCurrentAnimation(rt);
+            Hub.setCurrentAnimation(st);
             if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             //if it is paused, this animation will begin when the start button is clicked
         }
@@ -344,9 +351,11 @@ public class R2 implements SolidObject{
             pt.setOnFinished(e -> {
                 updateWorldAfterPlaceHaiku();
                 setTotalMoves(getTotalMoves() + 1);
-                Hub.nextAction();
             });
-            Hub.setCurrentAnimation(pt);
+            PauseTransition secondPause = new PauseTransition(Duration.millis(Hub.getMoveTime()));
+            SequentialTransition st = new SequentialTransition(pt, secondPause);
+            st.setOnFinished(e -> Hub.nextAction());
+            Hub.setCurrentAnimation(st);
             if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             //if it is paused, this animation will begin when the start button is clicked
         }
@@ -371,10 +380,6 @@ public class R2 implements SolidObject{
         int y = getY();
         if(!Hub.getWorld().isHaikuAt(x, y)) {
             if(!Hub.isRecording()) noHaikuToPickup();
-            PauseTransition pt = new PauseTransition(Duration.millis(Hub.getMoveTime()));
-            pt.setOnFinished(e -> Hub.nextAction());
-            Hub.setCurrentAnimation(pt);
-            if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             return;
         }
         if(Hub.isRecording()) {
@@ -384,9 +389,11 @@ public class R2 implements SolidObject{
             pt.setOnFinished(e -> {
                 updateWorldAfterPickupHaiku(x, y);
                 setTotalMoves(getTotalMoves() + 1);
-                Hub.nextAction();
             });
-            Hub.setCurrentAnimation(pt);
+            PauseTransition secondPause = new PauseTransition(Duration.millis(Hub.getMoveTime()));
+            SequentialTransition st = new SequentialTransition(pt, secondPause);
+            st.setOnFinished(e -> Hub.nextAction());
+            Hub.setCurrentAnimation(st);
             if(!Hub.isPaused()) Hub.getCurrentAnimation().play();
             //if it is paused, this animation will begin when the start button is clicked
         }
@@ -438,8 +445,8 @@ public class R2 implements SolidObject{
             crash();
             return;
         }
-        Hub.getWorld().addWorldObject(this, getX(), getY());  //register R2 as a world object
-        if(Hub.isRecording()) Hub.getWorld().r2List().add(this); //register this R2 for goal checking
+        Hub.getWorld().addWorldObject(this, getX(), getY());  //register Digipuff as a world object
+        if(Hub.isRecording()) Hub.getWorld().r2List().add(this); //register this Digipuff for goal checking
         addR2();
         spawned = true;
     }
@@ -480,7 +487,7 @@ public class R2 implements SolidObject{
         } else { //not recording
             img.setOpacity(0);  //image shouldn't be visible until it fades in
             Hub.getWorld().getPane().getChildren().add(img);
-            //fade R2 in
+            //fade Digipuff in
             FadeTransition ft = new FadeTransition(Duration.millis(Hub.getMoveTime() * 3), img);
             ft.setByValue(1);
             ft.setOnFinished(e -> {
@@ -583,4 +590,4 @@ public class R2 implements SolidObject{
         public void restore() { reset(); }
     }
 
-} //END OF R2 CLASS
+} //END OF Digipuff CLASS
