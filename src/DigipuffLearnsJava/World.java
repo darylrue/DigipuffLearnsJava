@@ -1120,9 +1120,9 @@ public class World {
     public void checkGoal() {
         if(getGoal().isEmpty()) return;
         for(Digipuff digipuff : r2List()) {
-            if(getGoal().getX() == null || digipuff.getX() == getGoal().getX()
-            && getGoal().getY() == null || digipuff.getY() == getGoal().getY()
-            && getGoal().getDirection() == null || getGoal().getDirection() == digipuff.getDirection()
+            if((getGoal().getX() == null || digipuff.getX() == getGoal().getX())
+            && (getGoal().getY() == null || digipuff.getY() == getGoal().getY())
+            && (getGoal().getDirection() == null || getGoal().getDirection() == digipuff.getDirection())
             && goalNumHaikusSuccess(digipuff)
             && goalNumMovesSuccess(digipuff))
                 successExitDialog("You did it!");
