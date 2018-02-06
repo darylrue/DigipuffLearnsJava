@@ -375,9 +375,11 @@ public class World {
 
     //OTHER METHODS
     public void prepareForReplay() {
-        haikus = initState.haikus;
-        redrawHaikus();
-        map = initState.map;
+        if(this.actionSequenceStarted) { //otherwise, initState has not been saved and will cause null pointer
+            haikus = initState.haikus;
+            redrawHaikus();
+            map = initState.map;
+        }
     }
 
     private void saveInitialState() {
@@ -1124,8 +1126,10 @@ public class World {
             && (getGoal().getY() == null || digipuff.getY() == getGoal().getY())
             && (getGoal().getDirection() == null || getGoal().getDirection() == digipuff.getDirection())
             && goalNumHaikusSuccess(digipuff)
-            && goalNumMovesSuccess(digipuff))
-                successExitDialog("You did it!");
+            && goalNumMovesSuccess(digipuff)) {
+                HaikuDisplay haikuDisplay = new HaikuDisplay();
+                haikuDisplay.showAndExit();
+            }
         }
     }
 

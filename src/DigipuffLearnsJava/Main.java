@@ -81,7 +81,9 @@ public class Main extends Application {
     }
 
     public void runCommands() {
-        demo();
+//        demo();
+        Digipuff dp = new Digipuff("", 3, 3, Dir.EAST, 1);
+        dp.spawn();
     }
 
     private void demo() {

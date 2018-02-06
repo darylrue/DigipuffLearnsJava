@@ -82,7 +82,7 @@ public final class Hub {
         return playbackFinished.get();
     }
 
-    public static double getMoveTime() { return 500 / Math.pow(getSpeed(), 1.3); }
+    public static double getMoveTime() { return 500 / Math.pow(getSpeed(), 1.5); }
 
     public static Transition getCurrentAnimation() { return currentAnimation; }
 
@@ -153,6 +153,7 @@ public final class Hub {
 
     public static void setAnimationFinished(boolean value) { animationFinished = value; }
 
+    public static void setExiting(boolean value) { exiting = value; }
 
     public static void setCurrentAnimation(Transition animation) { currentAnimation = animation; }
 
@@ -180,7 +181,7 @@ public final class Hub {
         dialog.show();
     }
 
-    private static void exitDialogWait(String message) {
+    public static void exitDialogWait(String message) {
         Ddialog dialog = new Ddialog(DialogType.INFO, getMainStage(), message);
         dialog.setFontSize(Hub.DIALOG_FONT_SIZE);
         dialog.setOKEvent(e -> System.exit(0));
