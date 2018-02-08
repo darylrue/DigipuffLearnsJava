@@ -577,7 +577,7 @@ public class Digipuff implements SolidObject{
     private void sizeImageAndSetId(ImageView iv) {
         iv.setFitWidth(Hub.getWorld().getSpaceSize() - Hub.getWorld().getGridLineWidth());
         iv.setFitHeight(Hub.getWorld().getSpaceSize() - Hub.getWorld().getGridLineWidth());
-        iv.setId(Hub.R2_ID);
+        iv.setId(Hub.DIGIPUFF_ID);
     }
 
     public class InitState{

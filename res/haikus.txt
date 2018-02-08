@@ -68,3 +68,8 @@ Haikus are Easy
 But Sometimes they Don't make Sense
 Refrigerator
 </haiku>
+<haiku>
+a lunar eclipse
+happened yesterday morning
+i did not see it
+</haiku>

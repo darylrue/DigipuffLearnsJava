@@ -20,7 +20,7 @@ public final class Hub {
     //CONSTANTS
     public static final int DEFAULT_WORLD_SPACE_SIZE = 85;
     private static final int DEFAULT_SPEED = 3;
-    public static final String R2_ID = "r2id";
+    public static final String DIGIPUFF_ID = "digipuffId";
     public static final String ANY = "Any";
     public static final int DIALOG_FONT_SIZE = 15;
     private static final long PAUSE_TIME_CONVERSION_FACTOR = 1_000_000_000;

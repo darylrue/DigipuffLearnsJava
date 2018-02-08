@@ -675,10 +675,12 @@ public class World {
             stackPane.getChildren().add(haikuIV);
             StackPane.setAlignment(haikuIV, Pos.CENTER);
         } else drawNumber(x, y);
-        //check if Digipuff is on this space. If so, move him to the front
+
+        //TODO - see if this section can be removed, now that Digipuff is on a separate layer
+        //check if Digipuff is on this space. If so, move her to the front
         for(int i = 0; i < stackPane.getChildren().size(); i++) {
             Node node = stackPane.getChildren().get(i);
-            if(node.getId() != null && node.getId().equals(Hub.R2_ID)) {
+            if(node.getId() != null && node.getId().equals(Hub.DIGIPUFF_ID)) {
                 node.toFront();
             }
         }
