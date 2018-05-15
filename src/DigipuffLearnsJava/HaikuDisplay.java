@@ -79,7 +79,8 @@ public class HaikuDisplay {
                     || (lineOfHaiku == 2 && lineStr.isEmpty())
                     || (lineOfHaiku == 3 && lineStr.isEmpty())
                     || (lineOfHaiku == 4 && !lineStr.equals(HAIKU_END_TAG))) {
-                throw new RuntimeException("haikus.txt is corrupt.");
+                Hub.exitDialog("haikus.txt is corrupt");
+                Hub.setExiting(true);
             } else {
                 lineOfHaiku++;
                 if(lineOfHaiku > 4) lineOfHaiku = 0;
