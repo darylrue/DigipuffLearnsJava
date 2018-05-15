@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===========================
+    THEME INFO
+    =========================== -->
+    <meta name="description" content="How to Use DigipuffLearnsJava">
+    <meta name="keywords" content="Daryl Rue, Digipuff Learns Java, DigipuffLearnsJava">
+    <meta name="author" content="Daryl Rue">
+
+    <title>How to Use DigipuffLearnsJava</title>
+
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="css/howto.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table>
+    <tr>
+        <td>
+            <h1 class="center">How to Use DigipuffLearnsJava</h1>
+            <p>DigipuffLearnsJava is an environment in which you will learn, not only how to program Digipuff to accomplish challenges, but also how to modify the environment itself using Java.</p>
+            <p>&nbsp;</p>
+
+            <h3 class="bold italic">Setup for IntelliJ IDEA:</h3>
+            <p>Create a new project (type: Java, Project SDK: 1.8) Click <span class="blue">File</span>, <span class="blue">New</span>, <span class="blue">Project</span>, <span class="blue">Next</span>, <span class="blue">Next</span>, Give your project a name, change the file location if desired, then click <span class="blue">Finish</span>.</p>
+            <p>In the left-hand Project directory tree, click the name of your new project and you should see a directory called "src".</p>
+            <p>Right click on "src" and choose <span class="blue">New</span> then <span class="blue">Package</span>. Give your package a name. It can be the same as your project name, or something different if you wish. Think of it just like a folder on your computer that organizes the stuff inside.</p>
+            <p>Place DigipuffLearnsJava.jar (included with all Digipuff assignments) in your root project directory (the one at the very top in bold). You can download it to that location or copy and paste within IntelliJ.</p>
+            <p>Once the DigipuffLearnsJava.jar file is in your root project directory, right click <span class="blue">DigipuffLearnsJava.jar </span>and select <span class="blue">Add as Library...</span>,then click <span class="blue">OK</span>.</p>
+            <p>Right click your root project directory, then click <span class="blue">New</span>, then <span class="blue">Directory</span>. Type "worlds" (without the quotes), then click <span class="blue">OK</span>.</p>
+            <p>Right click the <span class="blue">worlds</span> folder you just made and select <span class="blue">Mark Directory As</span>, then <span class="blue">Resources Root</span>. (NOTE: any world files you use for your Digipuff program must be in this directory)</p>
+            <p>You are now ready to program!</p>
+            <p>&nbsp;</p>
+
+            <h3 class="bold italic">Creating a Digipuff Program:</h3>
+            <p>Right click on your package folder and select <span class="blue">New</span> then <span class="blue">Java Class</span>.</p>
+            <p>Give your program a name, such as "MyFirstDigipuffProgram" or "Assignment01". Just make sure it begins with a capital letter. Then click <span class="blue">OK</span>.</p>
+            <p>You will now see the start of your new program.</p>
+            <p>First, under the package declaration and just above the line "public class ...," type: "import DigipuffLearnsJava.*;"</p>
+            <p>Next, on the line that starts with "public class ...," just after your program's name, but before the opening curly brace, type: "extends Main".</p>
+            <p>So your program should now look something like this:</p>
+            <pre>package myPkg;<br /><br />import DigipuffLearnsJava.*;<br /><br />public class MyFirstDigipuffProgram extends Main {<br /><br />}</pre>
+            <p>Next we are going to write the two methods that make up a basic Digipuff program.</p>
+            <p>The first tells the program which world file you want to use.</p>
+            <p>Inside the curly braces, type:</p>
+            <pre>@Override<br />public String getWorldUrl() {<br />    return "myFirstWorld.world";<br />}</pre>
+            <p>Note that all world files end in ".world" and the first part is whatever you named it when you created it.</p>
+            <p>So our program now looks something like this:</p>
+            <pre>package myPkg;<br /><br />import DigipuffLearnsJava.*;<br /><br />public class MyFirstDigipuffProgram extends Main {<br /><br />    @Override<br />    public String getWorldUrl() {<br />        return "myFirstWorld.world";<br />    }<br /><br />}</pre>
+            <p>Next, we are going to write the method that creates Digipuff, adds her to the world, and then tells her where to go and what to do.</p>
+            <p>Underneath the getWorldUrl() method, type:</p>
+            <pre>@Override<br />public void runCommands() {<br />    <br />}</pre>
+            <p>Inside this method, our first statement will be to create Digipuff:</p>
+            <pre>Digipuff dp = new Digipuff("My Digipuff", 0, 0, Dir.EAST, 0);</pre>
+            <p>This creates a new Digipuff which we will command using the reference "dp". Her name in the world will be "My Digipuff", she will begin at the coordinate (0, 0), facing East, and having 0 haikus.</p>
+            <p>Next, we need to add Digipuff to the world. We do that by calling:</p>
+            <pre>dp.spawn();</pre>
+            <p>This tells Digipuff to spawn herself in the world.</p>
+            <p>Finally, we are ready to give Digipuff some commands. We'll start with 3 easy ones:</p>
+            <pre>dp.move();<br />dp.turnLeft();<br />dp.move();</pre>
+            <p>So our program should now look something like this:</p>
+            <pre>package myPkg;<br /><br />import DigipuffLearnsJava.*;<br /><br />public class MyFirstDigipuffProgram extends Main {<br /><br />    @Override<br />    public String getWorldUrl() {<br />        return "myFirstWorld.world";<br />    }<br /><br />    @Override<br />    public void runCommands() {<br />        Digipuff dp = new Digipuff("My Digipuff", 0, 0, Dir.EAST, 0);<br />        dp.spawn();<br />        dp.move();<br />        dp.turnLeft();<br />        dp.move();<br />    }<br /><br />}</pre>
+            <p>Now you are ready! To run your program, right click your program tab and select <span class="blue">Run</span> (the green triangle that looks like a play symbol).</p>
+            <p>&nbsp;</p>
+
+            <h3 class="bold italic">Creating Custom Worlds for Digipuff (optional):</h3>
+            <img src="img/world-generator.png" alt="world-generator.png"
+                 width="600" height="435" />
+            <p><em>From outside IntelliJ:</em></p>
+            <p class="tab">Run WorldGenerator.jar</p>
+            <p><em>From inside IntelliJ:</em></p>
+            <p class="tab">Click <span class="blue">Run </span>then <span class="blue">Edit Configurations</span>.</p>
+            <p class="tab">Click the green Plus sign at the top left and select <span class="blue">Application</span>.</p>
+            <p class="tab">In the Name: field at the top, type "WorldGenerator".</p>
+            <p class="tab">In the Main class: field, type "DigipuffLearnsJava.WorldGenerator".</p>
+            <p class="tab">Make sure JRE: is 1.8, then click <span class="blue">OK</span>.</p>
+            <p class="tab">You should now see WorldGenerator as an option in the <span class="blue">Run</span> menu, as well as in the toolbar.</p>
+            <p class="tab italic">Note: You will need to save your world files in the "worlds" directory. (See the <span class="bold">Setup for IntelliJ IDEA</span> section)</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

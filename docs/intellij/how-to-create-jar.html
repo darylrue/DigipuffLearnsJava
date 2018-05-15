@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===========================
+    THEME INFO
+    =========================== -->
+    <meta name="description" content="How to Create a Jar File in IntelliJ IDEA">
+    <meta name="keywords" content="Daryl Rue, Digipuff Learns Java, DigipuffLearnsJava">
+    <meta name="author" content="Daryl Rue">
+
+    <title>How to Create a Jar File in IntelliJ IDEA</title><!-- This is what you see on your browser tab-->
+
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/howto.css">
+
+</head>
+<body>
+<table>
+    <tr>
+        <td>
+            <h1>How to Create a Jar File in IntelliJ IDEA</h1>
+            <h3 style="color: #5e9ca0;">Once your program works and you are ready to create a Jar file:</h3>
+            <p>1. Click <span class="blue bold">File</span>,  <span class="blue bold">Project Structure</span>, then on the left side click  <span class="blue bold">Artifacts</span>.</p>
+            <p>2. Click the green  <span class="blue bold">Plus</span> symbol, then select  <span class="blue bold">JAR</span>, then  <span class="blue bold">From modules with dependencies...</span></p>
+            <p>3. Beside <span class="blue bold"> Main Class</span>, click the button with the 3 dots.</p>
+            <p>4. Click the Project tab, then expand your project folder, then src, then your package, then select your program and click  <span class="blue bold">OK</span>.</p>
+            <p>5. Beside  <span class="blue bold">Directory for META-INF/MANIFEST.MF:</span>, add a folder to the path for your manifest file. For example:</p>
+            <p class="tab">change: </p>
+            <pre>C:\Users\2459037845\Documents\Java\Workspace\HelloWorld\src</pre>
+            <p class="tab">to: </p>
+            <pre>C:\Users\2459037845\Documents\Java\Workspace\HelloWorld\src\HelloWorldMF</pre>
+            <p>6. Click  <span class="blue bold">OK</span>.</p>
+            <p>7. In the top field beside <span class="blue bold">Name:</span>, change the name of the artifact, if desired. This will be the name you select when you want to build the .jar file.</p>
+            <p>8. In the middle pane, just above the <span class="blue bold">META_INF</span> folder, you will see the filename of your jar. If you wish to change it, right click it and select <span class="blue bold">Rename</span>. Change the name and then press ENTER.</p>
+            <p>9. Click <span class="blue bold">OK</span>.</p>
+            <p class="italic">Now, back on the main screen of IntelliJ:</p>
+            <p>10. Click <span class="blue bold">Build</span>, then <span class="blue bold">Build Artifacts</span>, select your artifact name, then click <span class="blue bold">Build</span>.</p>
+            <p class="tab">Once it is finished, your Jar file will be in the <span class="blue bold">out/artifacts/[artifact name]/</span> folder.</p>
+            <p>12. Right click your Jar file and select <span class="blue bold">Run</span> to make sure it works.</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
