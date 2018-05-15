@@ -1,6 +1,6 @@
 # DigipuffLearnsJava
 
-Documentation and Examples:
+Documentation and Instructions:
 https://dwrue1.github.io/DigipuffLearnsJava/docs
 
 Download the Latest Build:
