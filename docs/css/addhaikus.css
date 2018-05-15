@@ -20,6 +20,7 @@ h1 {
 }
 
 .content {
+	max-width: 700px;
 	padding: 20px;
 	font-size: 1.2rem;
 	font-family: 'Roboto';
