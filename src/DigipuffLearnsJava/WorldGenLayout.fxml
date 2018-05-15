@@ -67,7 +67,7 @@
                         </HBox>
                         <HBox alignment="TOP_CENTER">
                            <children>
-                              <ToggleButton fx:id="wallBtn" mnemonicParsing="false" onAction="#wallBtnClick" styleClass="wgen-button" text="Add / Remove Wall">
+                              <ToggleButton fx:id="wallBtn" mnemonicParsing="false" styleClass="wgen-button" text="Add / Remove Wall">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="worldToolsTG" />
                                  </toggleGroup>
@@ -86,7 +86,7 @@
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                            <children>
                               <Label styleClass="small-text" text="Location:" />
-                              <ToggleButton fx:id="goalBtn" mnemonicParsing="false" onAction="#goalBtnClick" styleClass="wgen-button" text="Add / Remove" toggleGroup="$worldToolsTG" />
+                              <ToggleButton fx:id="goalBtn" mnemonicParsing="false" styleClass="wgen-button" text="Add / Remove" toggleGroup="$worldToolsTG" />
                            </children>
                            <padding>
                               <Insets left="20.0" />
@@ -148,7 +148,7 @@
                         </HBox>
                         <HBox alignment="CENTER" spacing="20.0">
                            <children>
-                              <ToggleButton fx:id="addHaikuBtn" mnemonicParsing="false" onAction="#haikuBtnClick" styleClass="wgen-button" text="Add Haiku" toggleGroup="$worldToolsTG" />
+                              <ToggleButton fx:id="addHaikuBtn" mnemonicParsing="false" styleClass="wgen-button" text="Add Haiku" toggleGroup="$worldToolsTG" />
                               <HBox alignment="CENTER" spacing="5.0">
                                  <children>
                                     <Label text="amt" />

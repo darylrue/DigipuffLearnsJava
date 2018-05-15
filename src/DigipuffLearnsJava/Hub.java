@@ -31,7 +31,6 @@ public final class Hub {
     private static ControlBar controlBar;
     private static boolean paused;
     private static int speed = DEFAULT_SPEED;
-    private static long pauseTime = calculatePauseTime();
     private static boolean started = false;
     private static boolean exiting = false;
     private static boolean recording = true;
@@ -42,10 +41,9 @@ public final class Hub {
     private static BooleanProperty playbackFinished = new SimpleBooleanProperty(false);
     private static List<DigiAction> actionList;
     private static Transition currentAnimation;
-    private static boolean animationFinished = true;
 
 
-     //GETTERS
+    //GETTERS
     public static Stage getMainStage() {
         return mainStage;
     }
@@ -130,7 +128,6 @@ public final class Hub {
 
     public static void setSpeed(int spd) {
         speed = spd;
-        pauseTime = calculatePauseTime();
     }
 
     public static void setStarted(boolean value) {
@@ -150,8 +147,6 @@ public final class Hub {
     }
 
     private static void setPlaybackFinished(boolean value) { playbackFinished.set(value); }
-
-    public static void setAnimationFinished(boolean value) { animationFinished = value; }
 
     public static void setExiting(boolean value) { exiting = value; }
 

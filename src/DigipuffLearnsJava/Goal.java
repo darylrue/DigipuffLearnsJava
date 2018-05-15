@@ -20,7 +20,6 @@ public class Goal {
     private CompSym numMovesSym;
     private int numMoves;
     private ImageView image;
-    private String nextLine = System.lineSeparator();
 
     //CONSTRUCTORS
     public Goal(){};

@@ -175,21 +175,6 @@ public class WorldGenController implements Initializable {
     }
 
     @FXML
-    private void wallBtnClick() {
-
-    }
-
-    @FXML
-    private void haikuBtnClick() {
-
-    }
-
-    @FXML
-    private void goalBtnClick() {
-
-    }
-
-    @FXML
     private void setGoalDir() {
         if(loading) return;
         if(dirCB.getValue().equals(Hub.ANY)) {
