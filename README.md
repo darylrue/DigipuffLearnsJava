@@ -3,5 +3,5 @@
 Documentation and Examples:
 https://dwrue1.github.io/DigipuffLearnsJava/
 
-Download:
+Download the Latest Build:
 https://dwrue1.github.io/DigipuffLearnsJava/download
