@@ -13,7 +13,7 @@ https://dwrue1.github.io/DigipuffLearnsJava/docs/download/
 
 Digipuff Learns Java - A Java Learning Platform
 
-Copyright (C) 2017  Daryl Rue
+Copyright (C) 2018  Daryl Rue
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
