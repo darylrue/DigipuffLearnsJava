@@ -2,10 +2,10 @@
 ## A Java Learning Platform
 
 Documentation and Instructions:
-https://dwrue1.github.io/DigipuffLearnsJava/docs
+https://darylrue.github.io/DigipuffLearnsJava/docs/
 
 Download the Latest Build:
-https://dwrue1.github.io/DigipuffLearnsJava/docs/download/
+https://darylrue.github.io/DigipuffLearnsJava/docs/download/
 
 <p>&nbsp;</p>
 
